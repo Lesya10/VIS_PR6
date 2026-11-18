@@ -56,3 +56,31 @@ class Person:
         return self.fio < other.fio
 
 
+class Student(Person):
+    def __init__(self, raw_fio, raw_mail, raw_phone, group):
+        super().__init__(raw_fio, raw_mail, raw_phone)
+        group = group.strip().lower()
+        if not group:
+            raise AnketaError("Пустая группа")
+        self.group = group
+
+    def role(self):
+        return "Студент"
+
+    def extra(self):
+        return self.group
+
+
+class Teacher(Person):
+    def __init__(self, raw_fio, raw_mail, raw_phone, department):
+        super().__init__(raw_fio, raw_mail, raw_phone)
+        department = department.strip().title()
+        if not department:
+            raise AnketaError("пустая кафедра")
+        self.department = department
+
+    def role(self):
+        return "Преподаватель"
+
+    def extra(self):
+        return self.department
