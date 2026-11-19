@@ -47,7 +47,7 @@ def main():
 
     reg.save_ok()
     reg.save_errors()
-    print("\nСохранено: ok.txt и errors.txt")
+    print("\nФайлы успешно сохранены!")
 
 if __name__ == "__main__":
     main()
