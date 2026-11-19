@@ -19,5 +19,6 @@ def srednee(chisla):
         raise ValueError("список пустой")
     return sum(chisla) / len(chisla)
 
+
 def test_summa_otricatelnye():
     assert summa(-5, -3) == -8
