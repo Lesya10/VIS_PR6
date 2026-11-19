@@ -2,6 +2,7 @@ class AnketaError(Exception):
     """Своё исключение для ошибок в анкетах."""
     pass
 
+
 class Person:
     def __init__(self, raw_fio, raw_mail, raw_phone):
         self.fio = self.validate_fio(raw_fio)
@@ -10,6 +11,7 @@ class Person:
 
     @staticmethod
     def validate_fio(raw):
+        # Метод title() корректно делает заглавные буквы после пробелов и дефисов
         fio = " ".join(part.strip() for part in raw.split()).title()
         if len(fio.split()) < 2:
             raise AnketaError("в ФИО меньше двух слов")
@@ -18,6 +20,9 @@ class Person:
     @staticmethod
     def validate_mail(raw):
         mail = raw.strip().lower()
+        # ИСПРАВЛЕНИЕ (Ошибка 2): проверка на пробелы внутри адреса
+        if " " in mail:
+            raise AnketaError(f"Почта неверная: {mail}")
         if mail.count("@") != 1:
             raise AnketaError(f"Почта неверная: {mail}")
         local, domain = mail.split("@")
@@ -44,7 +49,7 @@ class Person:
 
     # Заглушки для наследников
     def role(self):
-        return "человек"
+        return "Человек"
 
     def extra(self):
         return ""
@@ -53,7 +58,10 @@ class Person:
         return f"{self.fio}"
 
     def __lt__(self, other):
-        return self.fio < other.fio
+        # Изменение, ошибка: сравнение с заменой ё на е для правильной сортировки
+        key_self = self.fio.lower().replace('ё', 'е')
+        key_other = other.fio.lower().replace('ё', 'е')
+        return key_self < key_other
 
 
 class Student(Person):
@@ -76,7 +84,7 @@ class Teacher(Person):
         super().__init__(raw_fio, raw_mail, raw_phone)
         department = department.strip().title()
         if not department:
-            raise AnketaError("пустая кафедра")
+            raise AnketaError("Пустая кафедра")
         self.department = department
 
     def role(self):

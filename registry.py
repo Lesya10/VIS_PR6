@@ -5,6 +5,9 @@ class Registry:
         self.good = []
         self.errors = []
 
+    def __iter__(self):
+        return iter(self.good)
+
     def add(self, person):
         self.good.append(person)
 
